@@ -18,28 +18,32 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int index;
 
-    @Column(columnDefinition = "varchar(50) comment '유저ID'",nullable = false, unique = true)
-    private String user_id;
+    @Column(name = "user_id",columnDefinition = "varchar(50) comment '유저ID'",nullable = false, unique = true)
+    private String userId;
 
-    @Column(columnDefinition = "varchar(50) comment '유저비밀번호'",nullable = false)
-    private String user_password;
+    @Column(name = "user_password", columnDefinition = "varchar(50) comment '유저비밀번호'",nullable = false)
+    private String userPassword;
 
-    @Column(columnDefinition = "char(1) comment '사용여부'")
+    @Column(name = "use_yn",columnDefinition = "char(1) comment '사용여부'")
     @ColumnDefault("1")
-    private String use_yn;
+    private String useYn;
 
-    @Column(columnDefinition = "datetime default current_timestamp comment '생성일자'")
-    private String create_datetime;
+    @Column(name = "create_datetime",columnDefinition = "datetime default current_timestamp comment '생성일자'")
+    private String createDatetime;
 
-    @Column(columnDefinition = "int(11) comment '수정자인식번호'")
-    private int modify_index;
+    @Column(name = "modify_index",columnDefinition = "int(11) comment '수정자인식번호'")
+    private int modifyIndex;
 
-    @Column(columnDefinition = "datetime comment '수정일자'")
-    private String modify_datetime;
+    @Column(name = "modify_datetime",columnDefinition = "datetime comment '수정일자'")
+    private String modifyDatetime;
+
+    @Column(name = "final_login_datetime",columnDefinition = "datetime comment '접속로그'")
+    private String finalLoginDatetime;
 
     @PreUpdate
     public void preUpdate() {
-        this.modify_datetime = LocalDateTime.now().toString();
+        this.modifyDatetime = LocalDateTime.now().toString();
+        this.finalLoginDatetime = LocalDateTime.now().toString();
     }
 
     // 수정자에는 어떻게 업데이트 할까?
