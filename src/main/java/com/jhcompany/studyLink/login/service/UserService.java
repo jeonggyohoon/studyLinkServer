@@ -1,10 +1,11 @@
 package com.jhcompany.studyLink.login.service;
 
 import com.jhcompany.studyLink.login.entity.UserEntity;
+import com.jhcompany.studyLink.login.repository.UserDto;
 import com.jhcompany.studyLink.login.repository.UserRepository;
-import com.jhcompany.studyLink.login.repository.UserRequestDto;
-import com.jhcompany.studyLink.login.repository.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,31 +13,51 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
+
     private UserRepository userRepository;
 
-    public Optional<UserResponseDto> findByUserId(String userId) {
-        return userRepository.findByUserIdAndUseYn(userId, "1").map(this::toResponseDto);
+
+
+
+    public Optional<UserDto> findByUserId(String userId) {
+        return userRepository.findByUserIdAndUseYn(userId, "Y").map(userEntity -> {
+            UserDto dto = new UserDto();
+            dto.setUserId(userEntity.getUserId());
+            dto.setUserPassword(userEntity.getUserPassword());
+            dto.setUseYn(userEntity.getUseYn());
+            return dto;
+        });
     }
 
-    private UserResponseDto toResponseDto(UserEntity userEntity) {
-        return UserResponseDto.builder()
-                .index(userEntity.getIndex())
-                .userId(userEntity.getUserId())
-                .useYn(userEntity.getUseYn())
-                .createDatetime(userEntity.getCreateDatetime())
-                .build();
+    public Optional<UserDto> createUser(UserDto userDto) {
+        UserEntity userentity = UserEntity.builder().userId(userDto.getUserId())
+                                                .userPassword(userDto.getUserPassword())
+                                                .useYn(userDto.getUseYn()).build();
+
+        UserEntity savedUser = userRepository.save(userentity);
+
+        UserDto savedDto = new UserDto();
+        savedDto.setUserId(savedUser.getUserId());
+        savedDto.setUserPassword(savedUser.getUserPassword());
+        savedDto.setUseYn(savedUser.getUseYn());
+
+        return Optional.of(savedDto);
     }
 
-    public Optional<UserResponseDto> creatUser(UserRequestDto userRequestDto) {
-        UserEntity userEntity = UserEntity.builder()
-                .userId(userRequestDto.getUserId())
-                .userPassword(userRequestDto.getUserPassword())
-                .useYn(userRequestDto.getUseYn())
-                .build();
-        UserEntity savedEntity = userRepository.save(userEntity);
-        return Optional.of(toResponseDto(savedEntity));
-    }
+    public Optional<UserDto> updateUser(String userId, UserDto userDto) {
+        return userRepository.findByUserIdAndUseYn(userId, "Y").map(user -> {
+            user.setUserPassword(userDto.getUserPassword());
+            user.setUseYn(userDto.getUseYn());
 
+            UserEntity updatedEntity = userRepository.save(user);
+
+            UserDto updatedDto = new UserDto();
+            updatedDto.setUserId(updatedEntity.getUserId());
+            updatedDto.setUserPassword(updatedEntity.getUserPassword());
+            updatedDto.setUseYn(updatedEntity.getUseYn());
+
+            return updatedDto;
+        });
+    }
 
 }

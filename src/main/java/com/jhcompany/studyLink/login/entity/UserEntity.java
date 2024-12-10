@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @Table(name = "user_information")
 @Data
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity {
 
     @Id
@@ -25,7 +25,7 @@ public class UserEntity {
     private String userPassword;
 
     @Column(name = "use_yn",columnDefinition = "char(1) comment '사용여부'")
-    @ColumnDefault("1")
+    @ColumnDefault("Y")
     private String useYn;
 
     @Column(name = "create_datetime",columnDefinition = "datetime default current_timestamp comment '생성일자'")
@@ -37,13 +37,13 @@ public class UserEntity {
     @Column(name = "modify_datetime",columnDefinition = "datetime comment '수정일자'")
     private String modifyDatetime;
 
-    @Column(name = "final_login_datetime",columnDefinition = "datetime comment '접속로그'")
-    private String finalLoginDatetime;
+    @Column(name = "last_connected_datetime",columnDefinition = "datetime comment '접속로그'")
+    private LocalDateTime lastConnectedDatetime;
 
     @PreUpdate
     public void preUpdate() {
         this.modifyDatetime = LocalDateTime.now().toString();
-        this.finalLoginDatetime = LocalDateTime.now().toString();
+        this.lastConnectedDatetime = LocalDateTime.now();
     }
 
     // 수정자에는 어떻게 업데이트 할까?
