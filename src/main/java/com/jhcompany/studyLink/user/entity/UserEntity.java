@@ -1,4 +1,4 @@
-package com.jhcompany.studyLink.login.entity;
+package com.jhcompany.studyLink.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,7 +43,7 @@ public class UserEntity {
     @PreUpdate
     public void preUpdate() {
         this.modifyDatetime = LocalDateTime.now().toString();
-        this.lastConnectedDatetime = LocalDateTime.now();
+//        this.lastConnectedDatetime = LocalDateTime.now();
     }
 
     // 수정자에는 어떻게 업데이트 할까?
