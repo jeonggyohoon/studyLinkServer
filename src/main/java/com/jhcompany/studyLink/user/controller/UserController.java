@@ -21,22 +21,20 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDto userDto) {
 
-        userDto.setUserPassword(passwordEncoder.encode(userDto.getUserPassword()));
-
-        Optional<UserDto> createdUser = userService.createUser(userDto);
-
-        if (createdUser.isPresent()) {
-            return ResponseEntity.ok("회원가입 완료");
-        } else {
-            return ResponseEntity.badRequest().body("회원가입 실패");
-        }
-    }
 
     @PutMapping("/login")
     public ResponseMessage login(@RequestBody UserDto userDto) {
         return userService.userLogin(userDto);
+    }
+
+    @PostMapping("/signUp")
+    public ResponseMessage signUp(@RequestBody UserDto userDto) {
+        return userService.signUpUser(userDto);
+    }
+
+    @PostMapping("/updateUser")
+    public ResponseMessage updateUser(@RequestBody UserDto userDto) {
+        return userService.updateUser(userDto);
     }
 }

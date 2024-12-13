@@ -21,10 +21,19 @@ public class UserEntity {
     @Column(name = "user_id",columnDefinition = "varchar(50) comment '유저ID'",nullable = false, unique = true)
     private String userId;
 
-    @Column(name = "user_password", columnDefinition = "varchar(50) comment '유저비밀번호'",nullable = false)
+    @Column(name = "nick_name",columnDefinition = "varchar(100) comment '닉네임'" )
+    private String nickName;
+
+    @Column(name = "user_email", columnDefinition = "varchar(100) comment '이메일'")
+    private String userEmail;
+
+    @Column(name = "user_password", columnDefinition = "varchar(50) comment '유저비밀번호'", nullable = false)
     private String userPassword;
 
-    @Column(name = "use_yn",columnDefinition = "char(1) comment '사용여부'")
+    @Column(name = "tags", columnDefinition = "varchar(500) comment '기술태그'")
+    private String tags;
+
+    @Column(name = "use_yn", columnDefinition = "char(1) comment '사용여부'")
     @ColumnDefault("Y")
     private String useYn;
 
