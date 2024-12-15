@@ -27,39 +27,27 @@ public class UserService {
     public ResponseMessage userLogin(UserDto userDto) {
 
         UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
-        if(userEntity != null) {
 
-            if(passwordEncoder.matches(userDto.getUserPassword(), userEntity.getUserPassword())) {
+        validateUser(userDto);
 
-                userEntity.setLastConnectedDatetime(LocalDateTime.now());
-//                userRepository.save(userEntity);
+        userEntity.setLastConnectedDatetime(LocalDateTime.now());
 
-                return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("로그인 완료").build();
-            } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호 틀렸음");
-            }
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "뭐야 이거 아이디 제대로 써라잉");
-        }
+        return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("로그인 완료").build();
     }
 
     // 회원가입
-    @Transactional
     public ResponseMessage signUpUser(UserDto userDto) {
 
         UserEntity userentity = userRepository.findByUserId(userDto.getUserId());
 
-        if(userentity == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "중복 아이디가 존재합니다.");
+        validateUser(userDto);
 
-        } else {
-            userentity.setUserId(userDto.getUserId());
-            userentity.setNickName("user" + String.valueOf(userRepository.findMaxIndex() + 1));
-            userentity.setUserEmail(userDto.getUserEmail());
-            userentity.setUserPassword(passwordEncoder.encode(userDto.getUserPassword()));
+        userentity.setUserId(userDto.getUserId());
+        userentity.setNickName("user" + String.valueOf(userRepository.findMaxIndex() + 1));
+        userentity.setUserEmail(userDto.getUserEmail());
+        userentity.setUserPassword(passwordEncoder.encode(userDto.getUserPassword()));
 
-            return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("회원가입 성공").build();
-        }
+        return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("회원가입 성공").build();
 
     }
 
@@ -69,27 +57,25 @@ public class UserService {
 
         UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
 
-       if(userEntity != null && passwordEncoder.matches(userDto.getUserPassword(), userEntity.getUserPassword())) {
+        validateUser(userDto);
 
-           userEntity.setNickName(userDto.getNickName());
-           userEntity.setUserEmail(userDto.getUserEmail());
-           userEntity.setUserPassword(passwordEncoder.encode(userDto.getUpdatePassword()));
-           userEntity.setTags(String.join(",",userDto.getTags()));
+        userEntity.setNickName(userDto.getNickName());
+        userEntity.setUserEmail(userDto.getUserEmail());
+        userEntity.setUserPassword(passwordEncoder.encode(userDto.getUpdatePassword()));
+        userEntity.setTags(String.join(",", userDto.getTags()));
 
-           return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("회원정보 수정 성공").build();
+        return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("회원정보 수정 성공").build();
 
-       } else {
-           if (userEntity == null){
-               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "일치하는 회원정보가 존재하지 않습니다.");
-           }
-           if (!passwordEncoder.matches(userDto.getUserPassword(), userEntity.getUserPassword())){
-               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호를 확인해 주세요");
-           }
-       }
-        return ResponseMessage.builder()
-                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                .message("오류 발생")
-                .build();
     }
 
+    // 회원 정보 검증(아이디, 비밀번호)
+    private  void validateUser(UserDto userDto) {
+        UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
+        if(userEntity == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "일치하는 회원 정보가 없습니다.");
+        }
+        if(passwordEncoder.matches(userDto.getUserPassword(), userEntity.getUserPassword())){
+            throw new  ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호를 확인해 주세요");
+        }
+    }
 }
