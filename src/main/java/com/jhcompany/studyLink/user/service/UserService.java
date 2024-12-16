@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +36,8 @@ public class UserService {
 
     // 회원가입
     public ResponseMessage signUpUser(UserDto userDto) {
+
+        validateUserID(userDto);
 
         UserEntity userEntity = UserEntity.builder()
                 .userId(userDto.getUserId())
@@ -73,9 +74,11 @@ public class UserService {
 
     }
 
-    // 회원 정보 검증(아이디, 비밀번호)
-    private  void validateUser(UserDto userDto) {
+    // 회원 정보 검증(아이디, 비밀번호) [로그인, 회원정보수정]
+    private void validateUser(UserDto userDto) {
         UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
+        // 페스워드 확인
+        System.out.println(passwordEncoder.encode(userDto.getUserPassword()));
         if(userEntity == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "일치하는 회원 정보가 없습니다.");
         }
@@ -85,5 +88,11 @@ public class UserService {
     }
 
 
-    // 회원 가입에서 사용할 중복검사 로직 추가해야할것
+    // 회원 가입에서 사용할 중복검사 로직 추가해야할것(완료)
+    private void validateUserID(UserDto userDto) {
+        UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
+        if(userEntity != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"동일 아이디가 존재합니다.");
+        }
+    }
 }
