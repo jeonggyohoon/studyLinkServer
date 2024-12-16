@@ -13,9 +13,6 @@ public class ResponseMessage {
     private HttpStatus httpStatus;
     // 메세지
     private String message;
-
-    // 요 두개만 만들어!
-
-
-
+    // 성공여부
+    private boolean success;
 }

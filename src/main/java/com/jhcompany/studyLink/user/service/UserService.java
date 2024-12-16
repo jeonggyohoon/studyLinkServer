@@ -32,23 +32,28 @@ public class UserService {
 
         userEntity.setLastConnectedDatetime(LocalDateTime.now());
 
-        return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("로그인 완료").build();
+        return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("로그인 완료").success(true).build();
     }
 
     // 회원가입
     public ResponseMessage signUpUser(UserDto userDto) {
 
-        UserEntity userentity = userRepository.findByUserId(userDto.getUserId());
+        UserEntity userEntity = UserEntity.builder()
+                .userId(userDto.getUserId())
+                .nickName("user" + (userRepository.findMaxIndex() == null ? 1 : userRepository.findMaxIndex() + 1))
+                .userEmail(userDto.getUserEmail())
+                .userPassword(passwordEncoder.encode(userDto.getUserPassword()))
+                .tags(null)
+                .useYn("Y")
+                .createDatetime(LocalDateTime.now().toString())
+                .build();
 
-        validateUser(userDto);
+        userRepository.save(userEntity);
 
-        userentity.setUserId(userDto.getUserId());
-        userentity.setNickName("user" + String.valueOf(userRepository.findMaxIndex() + 1));
-        userentity.setUserEmail(userDto.getUserEmail());
-        userentity.setUserPassword(passwordEncoder.encode(userDto.getUserPassword()));
-
-        return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("회원가입 성공").build();
-
+        return ResponseMessage.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("회원가입 성공")
+                .build();
     }
 
     // 회원정보수정
@@ -74,8 +79,11 @@ public class UserService {
         if(userEntity == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "일치하는 회원 정보가 없습니다.");
         }
-        if(passwordEncoder.matches(userDto.getUserPassword(), userEntity.getUserPassword())){
-            throw new  ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호를 확인해 주세요");
+        if (!passwordEncoder.matches(userDto.getUserPassword(), userEntity.getUserPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호를 확인해 주세요");
         }
     }
+
+
+    // 회원 가입에서 사용할 중복검사 로직 추가해야할것
 }
