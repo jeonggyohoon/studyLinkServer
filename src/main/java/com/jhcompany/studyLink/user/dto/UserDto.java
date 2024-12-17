@@ -12,4 +12,5 @@ public class UserDto {
     private String userEmail;
     private List<String> tags;
     private String updatePassword;
+    private Boolean firstCheck;
 }

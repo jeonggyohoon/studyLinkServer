@@ -27,7 +27,7 @@ public class UserService {
 
         UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
 
-        validateUser(userDto);
+        validateUser(userEntity, userDto);
 
         userEntity.setLastConnectedDatetime(LocalDateTime.now());
 
@@ -63,11 +63,14 @@ public class UserService {
 
         UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
 
-        validateUser(userDto);
+        if(!userDto.getFirstCheck()) {
+            validateUser(userEntity, userDto);
+            
+            userEntity.setNickName(userDto.getNickName());
+            userEntity.setUserEmail(userDto.getUserEmail());
+            userEntity.setUserPassword(passwordEncoder.encode(userDto.getUpdatePassword()));
+        }
 
-        userEntity.setNickName(userDto.getNickName());
-        userEntity.setUserEmail(userDto.getUserEmail());
-        userEntity.setUserPassword(passwordEncoder.encode(userDto.getUpdatePassword()));
         userEntity.setTags(String.join(",", userDto.getTags()));
 
         return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("회원정보 수정 성공").build();
@@ -75,8 +78,7 @@ public class UserService {
     }
 
     // 회원 정보 검증(아이디, 비밀번호) [로그인, 회원정보수정]
-    private void validateUser(UserDto userDto) {
-        UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
+    private void validateUser(UserEntity userEntity, UserDto userDto) {
         // 페스워드 확인
         System.out.println(passwordEncoder.encode(userDto.getUserPassword()));
         if(userEntity == null) {

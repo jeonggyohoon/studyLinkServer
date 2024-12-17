@@ -33,6 +33,7 @@ public class UserController {
     @PutMapping("/updateUser")
     @Operation(summary = "UpdateUser API", description = "회원정보 수정 API")
     public ResponseMessage updateUser(@RequestBody UserDto userDto) {
+        System.out.println(userDto);
         return userService.updateUser(userDto);
     }
 }
