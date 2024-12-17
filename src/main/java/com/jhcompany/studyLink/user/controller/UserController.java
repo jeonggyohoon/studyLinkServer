@@ -6,6 +6,7 @@ import com.jhcompany.studyLink.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,18 +18,20 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signUp")
-    @Operation(summary = "signUp API", description = "회원가입 API")
+    @Operation(summary = "SignUp API", description = "회원가입 API")
     public ResponseMessage signUp(@RequestBody UserDto userDto) {
         return userService.signUpUser(userDto);
     }
 
     @PutMapping("/login")
+    @Operation(summary = "Login API", description = "로그인 API")
     public ResponseMessage login(@RequestBody UserDto userDto) {
         return userService.userLogin(userDto);
     }
 
 
     @PutMapping("/updateUser")
+    @Operation(summary = "UpdateUser API", description = "회원정보 수정 API")
     public ResponseMessage updateUser(@RequestBody UserDto userDto) {
         return userService.updateUser(userDto);
     }

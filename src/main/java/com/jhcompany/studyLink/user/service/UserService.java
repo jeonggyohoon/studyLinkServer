@@ -31,7 +31,7 @@ public class UserService {
 
         userEntity.setLastConnectedDatetime(LocalDateTime.now());
 
-        return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("로그인 완료").success(true).build();
+        return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("로그인 완료").success(true).addInformation(userEntity.getNickName()).build();
     }
 
     // 회원가입

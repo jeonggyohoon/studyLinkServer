@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecruitEntity {
+public class RecruitPostEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +32,7 @@ public class RecruitEntity {
 
     @Column(name = "reqruiter_number", columnDefinition = "int(11) comment '모집인원'", nullable = false)
     private int reqruiterNumber;
+
+    @Column(columnDefinition = "varchar(255) comment '신청자'")
+    private String proposer;
 }

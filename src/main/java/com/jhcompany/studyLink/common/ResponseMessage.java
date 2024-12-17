@@ -15,4 +15,6 @@ public class ResponseMessage {
     private String message;
     // 성공여부
     private boolean success;
+    // 추가정보
+    private String addInformation;
 }
