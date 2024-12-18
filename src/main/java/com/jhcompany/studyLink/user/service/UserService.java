@@ -77,6 +77,16 @@ public class UserService {
 
     }
 
+    //회원 정보 조회(마이페이지)
+    public UserEntity findUserInformation(UserDto userDto) {
+
+        UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
+
+        userEntity.setUserEmail(userEntity.getUserEmail());
+
+        return userEntity;
+    }
+
     // 회원 정보 검증(아이디, 비밀번호) [로그인, 회원정보수정]
     private void validateUser(UserEntity userEntity, UserDto userDto) {
         // 페스워드 확인
