@@ -2,12 +2,10 @@ package com.jhcompany.studyLink.user.controller;
 
 import com.jhcompany.studyLink.common.ResponseMessage;
 import com.jhcompany.studyLink.user.dto.UserDto;
-import com.jhcompany.studyLink.user.entity.UserEntity;
 import com.jhcompany.studyLink.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,13 +32,12 @@ public class UserController {
     @PutMapping("/updateUser")
     @Operation(summary = "UpdateUser API", description = "회원정보 수정 API")
     public ResponseMessage updateUser(@RequestBody UserDto userDto) {
-        System.out.println(userDto);
         return userService.updateUser(userDto);
     }
 
     @GetMapping("/myPageView")
     @Operation(summary = "myPageView API", description = "마이페이지 조회")
-    public ResponseMessage myPageView(@RequestBody UserDto userDto) {
-        return userService.findUserInformation(userDto);
+    public ResponseMessage myPageView(@RequestParam("userId") String userId) {
+        return userService.findUserInformation(userId);
     }
 }

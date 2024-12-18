@@ -44,9 +44,11 @@ public class UserService {
 
         validateUserID(userDto);
 
+        int nextIndex = userRepository.findFirstByOrderByUserIndexDesc() == null ? 1 : userRepository.findFirstByOrderByUserIndexDesc().getUserIndex() + 1;
+
         UserEntity userEntity = UserEntity.builder()
                 .userId(userDto.getUserId())
-                .nickName("user" + (userRepository.findMaxIndex() == null ? 1 : userRepository.findMaxIndex() + 1))
+                .nickName("user" + nextIndex)
                 .userEmail(userDto.getUserEmail())
                 .userPassword(passwordEncoder.encode(userDto.getUserPassword()))
                 .tags(null)
@@ -68,9 +70,9 @@ public class UserService {
 
         UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
 
-        if(!userDto.getFirstCheck()) {
+        if (!userDto.getFirstCheck()) {
             validateUser(userEntity, userDto);
-            
+
             userEntity.setNickName(userDto.getNickName());
             userEntity.setUserEmail(userDto.getUserEmail());
             userEntity.setUserPassword(passwordEncoder.encode(userDto.getUpdatePassword()));
@@ -83,9 +85,9 @@ public class UserService {
     }
 
     //회원 정보 조회(마이페이지)
-    public ResponseMessage findUserInformation(UserDto userDto) {
+    public ResponseMessage findUserInformation(String userId) {
 
-        UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
+        UserEntity userEntity = userRepository.findByUserId(userId);
 
         UserDto userDtoView = new UserDto();
 
@@ -96,9 +98,7 @@ public class UserService {
 
     // 회원 정보 검증(아이디, 비밀번호) [로그인, 회원정보수정]
     private void validateUser(UserEntity userEntity, UserDto userDto) {
-        // 페스워드 확인
-        System.out.println(passwordEncoder.encode(userDto.getUserPassword()));
-        if(userEntity == null) {
+        if (userEntity == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "일치하는 회원 정보가 없습니다.");
         }
         if (!passwordEncoder.matches(userDto.getUserPassword(), userEntity.getUserPassword())) {
@@ -110,8 +110,8 @@ public class UserService {
     // 회원 가입에서 사용할 중복검사 로직 추가해야할것(완료)
     private void validateUserID(UserDto userDto) {
         UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
-        if(userEntity != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"동일 아이디가 존재합니다.");
+        if (userEntity != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "동일 아이디가 존재합니다.");
         }
     }
 }

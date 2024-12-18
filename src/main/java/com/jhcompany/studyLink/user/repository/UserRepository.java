@@ -13,6 +13,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     UserEntity findByUserId(String userId);
 
-    @Query("SELECT MAX(u.userIndex) FROM UserEntity u")
-    Integer findMaxIndex();
+    UserEntity findFirstByOrderByUserIndexDesc();
 }
