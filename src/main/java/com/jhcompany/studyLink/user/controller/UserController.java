@@ -40,7 +40,7 @@ public class UserController {
 
     @GetMapping("/myPageView")
     @Operation(summary = "myPageView API", description = "마이페이지 조회")
-    public UserEntity myPageView(@RequestBody UserDto userDto) {
+    public ResponseMessage myPageView(@RequestBody UserDto userDto) {
         return userService.findUserInformation(userDto);
     }
 }

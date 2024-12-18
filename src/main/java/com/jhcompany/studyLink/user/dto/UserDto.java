@@ -13,4 +13,7 @@ public class UserDto {
     private List<String> tags;
     private String updatePassword;
     private Boolean firstCheck;
+    private int myProposePostCount;
+    private int myProjectCount;
+    private int myFavoritePostCount;
 }

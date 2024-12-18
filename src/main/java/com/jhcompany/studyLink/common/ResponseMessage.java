@@ -1,6 +1,7 @@
 package com.jhcompany.studyLink.common;
 
 
+import com.jhcompany.studyLink.user.dto.UserDto;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
@@ -17,4 +18,6 @@ public class ResponseMessage {
     private boolean success;
     // 추가정보
     private String addInformation;
+
+    private UserDto userInformation;
 }

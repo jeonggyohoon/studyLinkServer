@@ -1,6 +1,8 @@
 package com.jhcompany.studyLink.user.service;
 
 import com.jhcompany.studyLink.common.ResponseMessage;
+import com.jhcompany.studyLink.recruit.entity.RecruitPostEntity;
+import com.jhcompany.studyLink.recruit.repository.RecruitPostRepository;
 import com.jhcompany.studyLink.user.entity.UserEntity;
 import com.jhcompany.studyLink.user.dto.UserDto;
 import com.jhcompany.studyLink.user.repository.UserRepository;
@@ -19,7 +21,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final RecruitPostRepository RecruitPostRepository;
+
     private final PasswordEncoder passwordEncoder;
+    private final RecruitPostRepository recruitPostRepository;
 
     // 로그인
     @Transactional
@@ -78,13 +83,15 @@ public class UserService {
     }
 
     //회원 정보 조회(마이페이지)
-    public UserEntity findUserInformation(UserDto userDto) {
+    public ResponseMessage findUserInformation(UserDto userDto) {
 
         UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
 
-        userEntity.setUserEmail(userEntity.getUserEmail());
+        UserDto userDtoView = new UserDto();
 
-        return userEntity;
+        userDtoView.setUserEmail(userEntity.getUserEmail());
+
+        return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("마이페이지 조회 성공").userInformation(userDtoView).build();
     }
 
     // 회원 정보 검증(아이디, 비밀번호) [로그인, 회원정보수정]
