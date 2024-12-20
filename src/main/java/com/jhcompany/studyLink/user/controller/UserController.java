@@ -39,9 +39,12 @@ public class UserController {
         return userService.updateUser(userDto);
     }
 
-    @GetMapping("/myPageView")
-    @Operation(summary = "myPageView API", description = "마이페이지 조회")
+    @GetMapping("/selectUserInfomation")
+    @Operation(summary = "SelectUserInfomation API", description = "회원정보 조회")
     public ResponseMessage myPageView(@RequestParam("userId") String userId) {
         return userService.findUserInformation(userId);
     }
+
+
+
 }

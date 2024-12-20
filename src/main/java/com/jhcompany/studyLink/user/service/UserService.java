@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -97,8 +100,13 @@ public class UserService {
         UserDto userDtoView = new UserDto();
 
         userDtoView.setUserEmail(userEntity.getUserEmail());
+        userDtoView.setNickName(userEntity.getNickName());
 
-        return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("마이페이지 조회 성공").userInformation(userDtoView).build();
+        if(userEntity.getTags() != null && !userEntity.getTags().isEmpty()) {
+            List<String> tagList = Arrays.asList(userEntity.getTags().split(","));
+            userDtoView.setTags(tagList);
+        }
+        return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("회원 정보 조회 성공").userInformation(userDtoView).build();
     }
 
     // 회원 정보 검증(아이디, 비밀번호) [로그인, 회원정보수정]

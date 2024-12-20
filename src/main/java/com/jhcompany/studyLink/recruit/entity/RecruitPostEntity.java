@@ -35,4 +35,7 @@ public class RecruitPostEntity {
 
     @Column(columnDefinition = "varchar(255) comment '신청자'")
     private String proposer;
+
+    @Column(name = "reqruit_status", columnDefinition = "varchar(1) comment '모집상태'")
+    private String reqruitStatus;
 }

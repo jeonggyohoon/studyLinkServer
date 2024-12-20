@@ -1,9 +1,12 @@
 package com.jhcompany.studyLink.common;
 
 
+import com.jhcompany.studyLink.recruit.entity.RecruitPostEntity;
 import com.jhcompany.studyLink.user.dto.UserDto;
 import lombok.*;
 import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -20,4 +23,8 @@ public class ResponseMessage {
     private String addInformation;
 
     private UserDto userInformation;
+
+    private List<String> throwList;
+
+    private List<RecruitPostEntity> recruitPostEntities;
 }

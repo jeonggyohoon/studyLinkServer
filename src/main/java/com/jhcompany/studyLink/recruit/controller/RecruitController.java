@@ -19,8 +19,12 @@ public class RecruitController {
     @PostMapping("/postWrite")
     @Operation(summary = "PostWrite API",description = "모집공고 작성")
     public ResponseMessage postWrite(@RequestBody RecruitDto recruitDto) {
-        return recruitService.PostWrite(recruitDto);
+        return recruitService.postWrite(recruitDto);
     }
 
-
+    @GetMapping("/getAllPost")
+    @Operation(summary = "GetAllPost API", description = "모집공고 리스트")
+    public ResponseMessage getAllPost() {
+        return recruitService.allPostList();
+    }
 }
