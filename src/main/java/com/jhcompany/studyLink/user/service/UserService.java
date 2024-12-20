@@ -1,7 +1,6 @@
 package com.jhcompany.studyLink.user.service;
 
 import com.jhcompany.studyLink.common.ResponseMessage;
-import com.jhcompany.studyLink.recruit.entity.RecruitPostEntity;
 import com.jhcompany.studyLink.recruit.repository.RecruitPostRepository;
 import com.jhcompany.studyLink.user.entity.UserEntity;
 import com.jhcompany.studyLink.user.dto.UserDto;
@@ -42,8 +41,6 @@ public class UserService {
     // 회원가입
     public ResponseMessage signUpUser(UserDto userDto) {
 
-        validateUserID(userDto);
-
         int nextIndex = userRepository.findFirstByOrderByUserIndexDesc() == null ? 1 : userRepository.findFirstByOrderByUserIndexDesc().getUserIndex() + 1;
 
         UserEntity userEntity = UserEntity.builder()
@@ -62,6 +59,14 @@ public class UserService {
                 .httpStatus(HttpStatus.OK)
                 .message("회원가입 성공")
                 .build();
+    }
+
+    public ResponseMessage checkDuplicateName(String userId) {
+
+        validateUserID(userId);
+
+        return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("사용가능 아이디입니다.").build();
+
     }
 
     // 회원정보수정
@@ -108,10 +113,14 @@ public class UserService {
 
 
     // 회원 가입에서 사용할 중복검사 로직 추가해야할것(완료)
-    private void validateUserID(UserDto userDto) {
-        UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
+    private void validateUserID(String userId) {
+        UserEntity userEntity = userRepository.findByUserId(userId);
+        System.out.println("userId = " + userId);
+        System.out.println("userEntity = " + userEntity);
         if (userEntity != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "동일 아이디가 존재합니다.");
         }
     }
+
+
 }

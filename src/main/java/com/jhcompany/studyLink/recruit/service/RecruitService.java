@@ -12,10 +12,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RecruitService {
 
-    RecruitPostRepository recruitPostRepository;
+    private final RecruitPostRepository recruitPostRepository;
 
     public ResponseMessage PostWrite(RecruitDto recruitPDto) {
-
         RecruitPostEntity recruitPostEntity = RecruitPostEntity.builder()
                 .cid(recruitPDto.getCid())
                 .title(recruitPDto.getTitle())
@@ -24,7 +23,7 @@ public class RecruitService {
                 .deadLine(recruitPDto.getDeadLine())
                 .reqruiterNumber(recruitPDto.getRecruiterNumber())
                 .build();
-
+        System.out.println("recruitPostEntity = " + recruitPostEntity);
         recruitPostRepository.save(recruitPostEntity);
 
         return ResponseMessage.builder().httpStatus(HttpStatus.OK).message("저장 성공").build();
