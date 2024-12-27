@@ -22,12 +22,16 @@ public class UserController {
         return userService.signUpUser(userDto);
     }
 
+    @GetMapping("/checkUsername")
+    @Operation(summary = "CheckUserName", description = "중복검사 API")
+    public ResponseMessage checkUsername(@RequestParam String userId) {
+        return userService.checkDuplicateName(userId);}
+
     @PutMapping("/login")
     @Operation(summary = "Login API", description = "로그인 API")
     public ResponseMessage login(@RequestBody UserDto userDto) {
         return userService.userLogin(userDto);
     }
-
 
     @PutMapping("/updateUser")
     @Operation(summary = "UpdateUser API", description = "회원정보 수정 API")
