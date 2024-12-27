@@ -34,7 +34,7 @@ public class UserEntity {
     private String tags;
 
     @Column(name = "use_yn", columnDefinition = "char(1) comment '사용여부'")
-    @ColumnDefault("'y'")
+    @ColumnDefault("Y")
     private String useYn;
 
     @Column(name = "create_datetime",columnDefinition = "datetime default current_timestamp comment '생성일자'")
