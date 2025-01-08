@@ -27,4 +27,10 @@ public class RecruitController {
     public ResponseMessage getAllPost() {
         return recruitService.allPostList();
     }
+
+    @GetMapping("/getDetailPost")
+    @Operation(summary = "GetDetailPost API", description = "모집공고 게시물")
+    public ResponseMessage getDetailPost(@RequestParam Long postIndex) {
+        return recruitService.DetailPostList(postIndex);
+    }
 }

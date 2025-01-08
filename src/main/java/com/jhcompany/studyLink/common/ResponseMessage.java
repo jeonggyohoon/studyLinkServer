@@ -1,6 +1,7 @@
 package com.jhcompany.studyLink.common;
 
 
+import com.jhcompany.studyLink.recruit.dto.RecruitDto;
 import com.jhcompany.studyLink.recruit.entity.RecruitPostEntity;
 import com.jhcompany.studyLink.user.dto.UserDto;
 import lombok.*;
@@ -23,6 +24,8 @@ public class ResponseMessage {
     private String addInformation;
 
     private UserDto userInformation;
+
+    private RecruitDto recruitInformation;
 
     private List<String> throwList;
 

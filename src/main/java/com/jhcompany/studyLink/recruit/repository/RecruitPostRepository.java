@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RecruitPostRepository extends JpaRepository<RecruitPostEntity, Integer> {
+public interface RecruitPostRepository extends JpaRepository<RecruitPostEntity, Long> {
     RecruitPostEntity findByCid(String userId);
 
 //    @Query("SELECT count(r) FROM RecruitPostEntity r WHERE r.cid = :cid")

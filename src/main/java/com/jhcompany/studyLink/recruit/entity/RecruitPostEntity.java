@@ -27,7 +27,7 @@ public class RecruitPostEntity {
     @Column(name = "poster_tag", columnDefinition = "varchar(500) comment '기술태그'")
     private String posterTag;
 
-    @Column(name = "dead_line",columnDefinition = "varchar(10) comment '마감기한'", nullable = false)
+    @Column(name = "dead_line", columnDefinition = "varchar(10) comment '마감기한'", nullable = false)
     private String deadLine;
 
     @Column(name = "reqruiter_number", columnDefinition = "int(11) comment '모집인원'", nullable = false)
